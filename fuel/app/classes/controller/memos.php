@@ -46,7 +46,6 @@ class Controller_Memos extends Controller_Template
 			if ($val->run())
 			{
 				$memo = Model_Memo::forge($fields->validated());
-				$memo->user_id = $this->_user_id;
 				if ($memo and $memo->save())
 				{
 					Session::set_flash('success', 'Added memo #'.$memo->id.'.');

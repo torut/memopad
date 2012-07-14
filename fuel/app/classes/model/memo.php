@@ -24,5 +24,11 @@ class Model_Memo extends \Orm\Model
 			'events' => array('before_save'),
 			'mysql_timestamp' => true,
 		),
+		'Observer_SetUserId' => array(
+			'events' => array('before_save'),
+		),
 	);
+
+	
+
 }
