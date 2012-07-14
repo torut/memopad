@@ -37,15 +37,24 @@ class Controller_Memos extends Controller_Template
 	public function action_create()
 	{
 		$fields = \Fieldset::forge('memo')->add_model('Model_Memo');
+		$fields->add('tag', 'タグ', array('type' => 'text',), array('trim'));
 
 		if (Input::method() == 'POST')
 		{
 			$fields->repopulate();
 			$val = $fields->validation();
-			
+
 			if ($val->run())
 			{
 				$memo = Model_Memo::forge($fields->validated());
+
+				$input = $fields->validated();
+				$tags = explode(',', $input['tag']);
+				foreach ($tags as $t) {
+					$tag = Model_Tag::forge(array('tag' => $t));
+					$memo->tags[] = $tag;
+				}
+
 				if ($memo and $memo->save())
 				{
 					Session::set_flash('success', 'Added memo #'.$memo->id.'.');
@@ -64,6 +73,12 @@ class Controller_Memos extends Controller_Template
 			}
 		}
 
+		$tags = array();
+		foreach(Model_Tag::find('all', array('where' => array('user_id' => $this->_user_id))) as $tag) {
+			$tags[] = $tag->tag;
+		}
+		$this->template->set_global('tags', array_unique($tags), false);
+
 		$this->template->title = "Memos";
 		$this->template->content = View::forge('memos/create');
 
@@ -76,7 +91,15 @@ class Controller_Memos extends Controller_Template
 		$memo = Model_Memo::find($id);
 
 		$fields = \Fieldset::forge('memo')->add_model('Model_Memo');
+		$fields->add('tag', 'タグ', array('type' => 'text',), array('trim'));
 		$fields->populate($memo)->repopulate();
+
+		$tags = array();
+		foreach ($memo->tags as $t) {
+			$tags[] = $t->tag;
+		}
+		$fields->field('tag')->set_value(implode(',', $tags));
+
 		$val = $fields->validation();
 
 		if ($val->run())
@@ -84,6 +107,25 @@ class Controller_Memos extends Controller_Template
 
 			$input = $fields->validated();
 			$memo->set('text', $input['text']);
+
+			$tags = array_unique(explode(',', $input['tag']));
+			$exists_tags = array();
+			foreach ($memo->tags as $k => $tag) {
+				if (in_array($tag->tag, $tags)) {
+					$exists_tags[] = $tag->tag;
+				} else {
+					$tag->delete();
+					unset($memo->tags[$k]);
+				}
+			}
+
+			foreach ($tags as $t) {
+				if (!in_array($t, $exists_tags)) {
+					$tag = Model_Tag::forge(array('tag' => $t));
+					$memo->tags[] = $tag;
+				}
+			}
+
 			if ($memo->save())
 			{
 				Session::set_flash('success', 'Updated memo #' . $id);
@@ -107,6 +149,12 @@ class Controller_Memos extends Controller_Template
 
 			$this->template->set_global('memo', $memo, false);
 		}
+		
+		$tags = array();
+		foreach(Model_Tag::find('all', array('where' => array('user_id' => $this->_user_id))) as $tag) {
+			$tags[] = $tag->tag;
+		}
+		$this->template->set_global('tags', array_unique($tags), false);
 
 		$this->template->title = "Memos";
 		$this->template->content = View::forge('memos/edit');

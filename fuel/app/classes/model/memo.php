@@ -29,6 +29,14 @@ class Model_Memo extends \Orm\Model
 		),
 	);
 
-	
+	protected static $_has_many = array(
+		'tags' => array(
+			'key_from' => 'id',
+			'model_to' => 'Model_Tag',
+			'key_to' => 'memo_id',
+			'cascade_save' => true,
+			'cascade_delete' => true,
+		),
+	);
 
 }

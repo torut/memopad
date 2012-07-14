@@ -4,9 +4,12 @@
 	<meta charset="utf-8">
 	<title><?php echo $title; ?></title>
 	<?php echo Asset::css('bootstrap.css'); ?>
+    <?php echo Asset::css('jquery.tagsinput.css'); ?>
 	<style>
 		body { margin: 40px; }
 	</style>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <?php echo Asset::js('jquery.tagsinput.js'); ?>
 </head>
 <body>
 	<div class="container">

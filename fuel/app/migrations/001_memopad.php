@@ -53,13 +53,14 @@ class Memopad
 		\DBUtil::create_table(
 			'tags',
 			array(
+				'id' => array('type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true, 'null' => false),
 				'tag' => array('type' => 'varchar', 'constraint' => 255, 'null' => false),
 				'user_id' => array('type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => false),
 				'memo_id' => array('type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => false),
 				'updated_at' => array('type' => 'datetime',	'null' => false),
 				'created_at' => array('type' => 'datetime', 'null' => false),
 			),
-			array(),
+			array('id'),
 			true,
 			'InnoDB',
 			'utf8'

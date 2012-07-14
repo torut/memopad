@@ -12,7 +12,7 @@
 <?php foreach ($memos as $memo): ?>		<tr>
 
 		<td>
-		  <?php echo e(Str::truncate($memo->text, 10)); ?>
+		  <?php echo e(Str::truncate($memo->text, 20)); ?>
 		</td>
 			<td>
 				<?php echo Html::anchor('memos/view/'.$memo->id, 'View'); ?> |
