@@ -41,12 +41,12 @@ class Controller_Memos extends Controller_Template
 		if (Input::method() == 'POST')
 		{
 			$fields->repopulate();
-			$memo = Model_Memo::forge($fields->input());
-			$memo->user_id = $this->_user_id;
 			$val = $fields->validation();
 			
 			if ($val->run())
 			{
+				$memo = Model_Memo::forge($fields->validated());
+				$memo->user_id = $this->_user_id;
 				if ($memo and $memo->save())
 				{
 					Session::set_flash('success', 'Added memo #'.$memo->id.'.');
@@ -76,11 +76,15 @@ class Controller_Memos extends Controller_Template
 
 		$memo = Model_Memo::find($id);
 
-		$val = Model_Memo::validate('edit');
+		$fields = \Fieldset::forge('memo')->add_model('Model_Memo');
+		$fields->populate($memo)->repopulate();
+		$val = $fields->validation();
 
 		if ($val->run())
 		{
 
+			$input = $fields->validated();
+			$memo->set('text', $input['text']);
 			if ($memo->save())
 			{
 				Session::set_flash('success', 'Updated memo #' . $id);
