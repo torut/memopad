@@ -7,13 +7,13 @@ class Model_User extends \Orm\Model
 		'username' => array(
 			'data_type' => 'varchar',
 			'label' => 'ユーザー名',
-			'validation' => array('trim', 'required', 'min_length' => array(4), 'max_length' => array(32), 'valid_string' => array('alpha', 'numeric', 'utf8')),
+			'validation' => array('trim', 'required', 'min_length' => array(4), 'max_length' => array(32), 'match_pattern' => array('/^[a-zA-Z0-9]+$/'), 'unique_username'),
 			'form' => array('type' => 'text'),
 		),
 		'password' => array(
 			'data_type' => 'varchar',
 			'label' => 'パスワード',
-			'validation' => array('trim', 'required', 'min_length' => array(4), 'max_length' => array(32), 'valid_string' => array('alpha', 'numeric', 'utf8')),
+			'validation' => array('trim', 'required', 'min_length' => array(4), 'max_length' => array(32), 'match_pattern' => array('/^[a-zA-Z0-9]+$/')),
 			'form' => array('type' => 'password'),
 		),
 		'email' => array(
@@ -38,4 +38,14 @@ class Model_User extends \Orm\Model
 			'mysql_timestamp' => true,
 		),
 	);
+
+	public static function _validation_unique_username($val)
+	{
+		if (self::count(array('where' => array('username' => $val)))) {
+			Validation::active()->set_message('unique_username', ':value is not unique username.');
+			return false;
+		}
+		return true;
+	}
+
 }

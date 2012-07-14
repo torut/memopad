@@ -11,7 +11,7 @@ class Controller_Users extends Controller_Template
 			$fields->repopulate();
 			$user = Model_User::forge($fields->input());
 			$val = $fields->validation();
-			
+
 			if ($val->run())
 			{
 				$auth = Auth::forge('simpleauth');
@@ -19,7 +19,7 @@ class Controller_Users extends Controller_Template
 
 				if ($user and $user->save())
 				{
-					Session::set_flash('success', 'Added user #'.$user->id.'.');
+					Session::set_flash('success', 'Added user "'.$user->username.'".');
 
 					Response::redirect('login');
 				}

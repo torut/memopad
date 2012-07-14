@@ -12,7 +12,7 @@
 
 		<div class="actions">
 			<?php echo Form::submit('submit', 'Login', array('class' => 'btn primary')); ?>
-
+			<a href="<?php echo Uri::create('users/create'); ?>" class="btn success">Regist Now</a>
 		</div>
 	</fieldset>
 <?php echo Form::close(); ?>

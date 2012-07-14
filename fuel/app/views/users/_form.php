@@ -9,7 +9,7 @@
 	  </table>
 
 		<div class="actions">
-			<?php echo Form::submit('submit', 'Save', array('class' => 'btn primary')); ?>
+			<?php echo Form::submit('submit', 'Regist Now', array('class' => 'btn primary')); ?>
 
 		</div>
 	</fieldset>
