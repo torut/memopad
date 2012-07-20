@@ -15,9 +15,32 @@ class Controller_Memos extends Controller_Template
 
 	}
 
-	public function action_index()
+	public function action_index($page = 1)
 	{
-		$data['memos'] = Model_Memo::find('all', array('where' => array('user_id' => $this->_user_id)));
+		$total_items = Model_Memo::count(array('where' => array('user_id' => $this->_user_id)));
+
+		Config::load('pagination', 'pagination');
+		$paginator = array(
+			'pagination_url' => Uri::create('memos'),
+			'per_page' => 5,
+			'total_items' => $total_items,
+			'current_page' => $page,
+			'template' => Config::get('pagination.template'),
+		);
+
+		Pagination::set_config($paginator);
+
+		$data['memos'] = Model_Memo::search(
+			array('user_id' => $this->_user_id),
+			Pagination::$per_page,
+			Pagination::$offset
+		);
+
+		$data['total_items'] = $total_items;
+		$data['start_item']  = Pagination::$offset + 1;
+		$data['end_item']    = Pagination::$offset + Pagination::$per_page;
+		$data['per_page']    = Pagination::$per_page;
+
 		$this->template->title = "Memos";
 		$this->template->content = View::forge('memos/index', $data);
 

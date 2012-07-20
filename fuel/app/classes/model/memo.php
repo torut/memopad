@@ -39,4 +39,14 @@ class Model_Memo extends \Orm\Model
 		),
 	);
 
+	public static function search($where = array(), $limit, $offset)
+	{
+		$opt = array(
+			'where' => $where,
+			'limit' => $limit,
+			'offset' => $offset,
+		);
+			
+		return self::find('all', $opt);
+	}
 }

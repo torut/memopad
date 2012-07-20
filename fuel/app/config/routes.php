@@ -2,6 +2,8 @@
 return array(
 	'login' => 'users/login',
 	'logout' => 'users/logout',
+	'memos/(\d+)' => 'memos/index/$1',
+
 	'_root_'  => 'memos',  // The default route
 	'_404_'   => 'welcome/404',    // The main 404 route
 	

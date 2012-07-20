@@ -1,6 +1,7 @@
 <h2>Listing Memos</h2>
 <br>
 <?php if ($memos): ?>
+<?php echo $start_item; ?>件目～<?php echo $end_item; ?>件目 / 全<?php echo $total_items;  ?>件
 <table class="zebra-striped">
 	<thead>
 		<tr>
@@ -23,6 +24,8 @@
 		</tr>
 <?php endforeach; ?>	</tbody>
 </table>
+
+<?php echo Pagination::create_links(); ?>
 
 <?php else: ?>
 <p>No Memos.</p>
