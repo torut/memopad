@@ -43,7 +43,6 @@ class Controller_Memos extends Controller_Template
 
 		$this->template->title = "Memos";
 		$this->template->content = View::forge('memos/index', $data);
-
 	}
 
 	public function action_view($id = null)
@@ -54,7 +53,6 @@ class Controller_Memos extends Controller_Template
 
 		$this->template->title = "Memo";
 		$this->template->content = View::forge('memos/view', $data);
-
 	}
 
 	public function action_create()
@@ -100,11 +98,12 @@ class Controller_Memos extends Controller_Template
 		foreach(Model_Tag::find('all', array('where' => array('user_id' => $this->_user_id))) as $tag) {
 			$tags[] = $tag->tag;
 		}
+
+		// set_globalメソッドを使うと、呼び出した先のテンプレートだけでなく、そこからさらに呼び出されるテンプレートにも引き継がれるっぽい
 		$this->template->set_global('tags', array_unique($tags), false);
 
 		$this->template->title = "Memos";
 		$this->template->content = View::forge('memos/create');
-
 	}
 
 	public function action_edit($id = null)

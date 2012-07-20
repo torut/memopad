@@ -20,6 +20,7 @@ class Model_Tag extends \Orm\Model
 			'events' => array('before_save'),
 			'mysql_timestamp' => true,
 		),
+		/* 独自の Observer を設定できる */
 		'Observer_SetUserId' => array(
 			'events' => array('before_save'),
 		),

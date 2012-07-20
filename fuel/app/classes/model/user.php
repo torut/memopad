@@ -39,10 +39,23 @@ class Model_User extends \Orm\Model
 		),
 	);
 
+	/**
+	 * モデルごとの独自のvalitetion ruleの指定
+	 * rule名に _validation_ のprefixをつけた statis メソッドにする
+	 * $_properties の validationキーの配列のなかで unique_username としたら
+	 * _validation_unique_username() となる。
+	 * 呼ばれる時の第1引数が入力された値になる
+	 * rule名 => array(option) と指定したときは第2引数にoptionの値が入る
+	 */
 	public static function _validation_unique_username($val)
 	{
 		if (self::count(array('where' => array('username' => $val)))) {
 			Validation::active()->set_message('unique_username', ':value is not unique username.');
+			/**
+			 * set_messageメソッドの第2引数のエラーメッセージの中に
+			 * :label とするとそのフィールドのラベル名、
+			 * :value とするとそのフィールドに入力された値に置換される
+			 */
 			return false;
 		}
 		return true;
