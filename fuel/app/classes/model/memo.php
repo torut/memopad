@@ -8,7 +8,7 @@ class Model_Memo extends \Orm\Model
 		'text' => array(
 			'data_type' => 'text',
 			'label' => 'メモ本文',
-			'validation' => array('required',),
+			'validation' => array('trim', 'required'),
 			'form' => array('type' => 'textarea'),
 		),
 		'created_at',

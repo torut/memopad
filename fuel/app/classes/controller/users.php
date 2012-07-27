@@ -9,11 +9,11 @@ class Controller_Users extends Controller_Template
 		if (Input::method() == 'POST')
 		{
 			$fields->repopulate();
-			$user = Model_User::forge($fields->input());
 			$val = $fields->validation();
 
 			if ($val->run())
 			{
+				$user = Model_User::forge($fields->validated());
 				$auth = Auth::forge('simpleauth');
 				$user->password = $auth->hash_password($user->password);
 
@@ -31,6 +31,7 @@ class Controller_Users extends Controller_Template
 			}
 			else
 			{
+				$fields->populate($fields->validated());
 				Session::set_flash('error', $val->error());
 			}
 		}

@@ -20,7 +20,7 @@ class Model_User extends \Orm\Model
 			'data_type' => 'varchar',
 			'label' => 'メールアドレス',
 			'validation' => array('trim', 'required', 'max_length' => array(255), 'valid_email'),
-			'form' => array('type' => 'text'),
+			'form' => array('type' => 'text', 'description' => '例: aaa@eee.jp'),
 		),
 		'last_login',
 		'login_hash',
