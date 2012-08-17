@@ -52,7 +52,14 @@ class Controller_Users extends Controller_Template
 			$auth = Auth::forge('simpleauth');
 			if ($auth->login($user->username, $user->password))
 			{
-				Session::set_flash('success', 'logedin user "'.$user->username.'".');
+
+				$user_id = $auth->get_user_id();
+				$loginUser = Model_User::find($user_id[1]);
+				$now = Date::forge();
+				$loginUser->last_login = $now->format('mysql');
+				$loginUser->save();
+
+				Session::set_flash('success', 'logedin user "'.$loginUserr->username.'".');
 
 				Response::redirect('memos');
 			}
